@@ -3,10 +3,12 @@ package com.Doruntine.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
@@ -14,6 +16,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class My2DGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
+    private SpriteBatch batch ;
+    private Player player;
 
 
     @Override
@@ -23,16 +27,21 @@ public class My2DGame extends ApplicationAdapter {
         camera.update();
 
         shapeRenderer = new ShapeRenderer();
+        batch = new SpriteBatch();
+        player = new Player(400,300,32,32);
 
     }
     @Override
     public void render() {
+        float delta = Gdx.graphics.getDeltaTime();
+        handleInput(delta);
 
         Gdx.gl.glClearColor(0.2f, 0.6f, 0.2f, 1); // Green grass
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         shapeRenderer.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.DARK_GRAY);
@@ -46,14 +55,33 @@ public class My2DGame extends ApplicationAdapter {
         for (int y = 0; y <= 600; y += 32) {
             shapeRenderer.line(0, y, 800, y);
         }
-
         shapeRenderer.end();
+
+        // Drawing the player
+        batch.begin();
+        player.render(batch);
+        batch.end();
+
+
+    }
+
+    private void handleInput (float delta){
+        float dx = 0, dy =1;
+        if(Gdx.input.isButtonJustPressed(Input.Keys.W) ) dy= 1;
+        if(Gdx.input.isButtonJustPressed(Input.Keys.S) ) dy= -1;
+        if(Gdx.input.isButtonJustPressed(Input.Keys.A) ) dy= -1;
+        if(Gdx.input.isButtonJustPressed(Input.Keys.D) ) dy= 1;
+
+        player.move(dx,dy, delta);
+
     }
 
 
     @Override
     public void dispose() {
         shapeRenderer.dispose();
+        batch.dispose();
+        player.dispose();
 
     }
 }
