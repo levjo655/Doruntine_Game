@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Player {
+
     public float x,y;   // Position
     public float width, height; // Size
     public float speed = 200; // Pixel per second
