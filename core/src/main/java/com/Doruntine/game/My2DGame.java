@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -13,12 +14,14 @@ public class My2DGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private Player player;
     private Camera gameCamera;
+    private Texture mapTexture;
 
     @Override
     public void create() {
         gameCamera = new Camera(800, 600); // your smooth following camera
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
+        mapTexture = new Texture("demo_map.png");
         player = new Player(400, 300, 96, 96); // spawn player at center
     }
 
@@ -47,6 +50,7 @@ public class My2DGame extends ApplicationAdapter {
 
         // Draw player
         batch.begin();
+        batch.draw(mapTexture,0,0);
         player.render(batch);
         batch.end();
     }
